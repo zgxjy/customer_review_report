@@ -1,0 +1,24 @@
+{
+  "total_tokens": 11306,
+  "call_count": 8,
+  "average_tokens_per_call": 1413.2,
+  "tokens_by_model": {
+    "gpt-4o-mini": 11306
+  },
+  "tokens_by_operation": {
+    "user_profile_classification": 8219,
+    "product_topic_classification": 3087
+  },
+  "duration_seconds": 62.857891,
+  "start_time": "2025-04-26T15:57:29.101281",
+  "end_time": "2025-04-26T15:58:31.959172",
+  "report_time": "2025-04-26T15:58:31.959172",
+  "project_code": "kinyo",
+  "prompt_tokens": 10373,
+  "completion_tokens": 933,
+  "cost_estimate": {
+    "input_cost": 0.01556,
+    "output_cost": 0.001866,
+    "total_cost": 0.017426
+  }
+}

@@ -1,0 +1,649 @@
+/* 报告容器 - 最外层容器 */
+.report-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  transition: all var(--transition-duration);
+  padding: 16px;
+  gap: 16px; /* 两个容器之间的间隔 */
+}
+
+/* 全屏模式样式 */
+.report-container.fullscreen-mode {
+  padding: 0;
+  gap: 0;
+  position: absolute; /* 改为absolute而不是fixed，允许滚动 */
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999;
+  background-color: var(--bg-color);
+}
+
+.fullscreen-mode .insight-dashboard {
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  padding-top: 60px; /* 留出空间给退出全屏按钮 */
+}
+
+/* 全屏模式全局样式 */
+body.app-fullscreen-mode {
+  /* 移除overflow: hidden，允许滚动 */
+}
+
+body.app-fullscreen-mode .ant-layout-content {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+body.app-fullscreen-mode .app-layout {
+  background-color: var(--bg-color);
+}
+
+/* 操作区容器 */
+.report-actions-container {
+  background-color: var(--insight-card-bg);
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: var(--insight-box-shadow);
+  border: 1px solid var(--insight-border-color);
+  z-index: 10;
+  transition: all var(--transition-duration);
+}
+
+/* 洞察看板区域 */
+.insight-dashboard {
+  padding: 24px;
+  background-color: var(--insight-bg);
+  flex: 1;
+  color: var(--text-color);
+  transition: all var(--transition-duration);
+  border-radius: 12px;
+  box-shadow: var(--insight-box-shadow);
+  border: 1px solid var(--insight-border-color);
+}
+
+/* 仪表盘头部区域 */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--insight-card-bg);
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.dashboard-breadcrumb {
+  color: var(--text-color);
+}
+
+.dashboard-breadcrumb a,
+.dashboard-breadcrumb .ant-breadcrumb-separator,
+.dashboard-breadcrumb .ant-breadcrumb-link {
+  color: var(--text-color) !important;
+  transition: color var(--transition-duration);
+}
+
+.dashboard-breadcrumb a:hover {
+  color: var(--insight-highlight-color) !important;
+}
+
+/* 操作按钮区域 */
+.dashboard-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.export-btn, .fullscreen-btn {
+  background-color: var(--insight-highlight-color) !important;
+  border-color: var(--insight-highlight-color) !important;
+  transition: all var(--transition-duration);
+}
+
+.export-btn:hover, .fullscreen-btn:hover {
+  opacity: 0.9;
+  box-shadow: 0 0 8px var(--insight-highlight-color);
+}
+
+/* 退出全屏按钮容器 */
+.fullscreen-exit-container {
+  position: fixed; /* 保持fixed，确保按钮始终可见 */
+  top: 10px;
+  right: 10px;
+  z-index: 10000; /* 确保在最上层 */
+}
+
+.exit-fullscreen-btn {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.3s;
+}
+
+.exit-fullscreen-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 打印样式优化 */
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  .report-actions-container, .dashboard-header, .ant-message, .ant-tooltip {
+    display: none !important;
+  }
+  
+  .report-container {
+    background-color: white !important;
+  }
+  
+  .insight-dashboard {
+    padding: 0 !important;
+    background-color: white !important;
+  }
+  
+  .report-header, .card-container, .insight-panel {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid;
+  }
+  
+  .ant-card-head {
+    background-color: #f5f5f5 !important;
+    color: black !important;
+  }
+}
+
+.report-header {
+  margin-bottom: 24px;
+  background-color: var(--insight-card-bg);
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: var(--insight-box-shadow);
+  border: 1px solid var(--insight-border-color);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-duration);
+}
+
+.report-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--insight-gradient);
+  opacity: 0.7;
+  transition: background var(--transition-duration);
+}
+
+.report-header h1 {
+  margin-bottom: 16px;
+  color: var(--insight-highlight-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-shadow: var(--insight-text-shadow);
+  transition: color var(--transition-duration), text-shadow var(--transition-duration);
+}
+
+.report-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.report-info .ant-tag {
+  padding: 4px 8px;
+  font-size: 14px;
+  margin-right: 0;
+}
+
+.report-tag {
+  background-color: var(--component-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 4px !important;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  transition: all var(--transition-duration);
+}
+
+/* 加载和无数据状态 */
+.loading-container,
+.no-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  width: 100%;
+  background-color: var(--insight-bg);
+  color: var(--text-color);
+  transition: all var(--transition-duration);
+}
+
+.loading-container .ant-spin-text {
+  color: var(--insight-highlight-color);
+  margin-top: 12px;
+  transition: color var(--transition-duration);
+}
+
+.loading-container .ant-spin-dot-item {
+  background-color: var(--insight-highlight-color);
+  transition: background-color var(--transition-duration);
+}
+
+/* 卡片容器通用样式 */
+.card-container {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--insight-box-shadow);
+  background-color: var(--insight-card-bg);
+  border: 1px solid var(--insight-border-color);
+  transition: all var(--transition-duration);
+}
+
+.card-container .ant-card-head {
+  color: var(--text-color);
+  font-weight: bold;
+  font-size: 18px;
+  background-color: var(--component-bg);
+  border-bottom: 1px solid var(--insight-border-color);
+  position: relative;
+  transition: all var(--transition-duration);
+}
+
+.card-container .ant-card-head::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--insight-gradient);
+  opacity: 0.7;
+  transition: background var(--transition-duration);
+}
+
+/* 卡片内部区域样式 */
+.section-divider {
+  margin: 24px 0;
+  position: relative;
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background: var(--insight-gradient);
+  opacity: 0.6;
+  transition: background var(--transition-duration);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: var(--insight-highlight-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color var(--transition-duration);
+}
+
+/* 洞察面板样式 */
+.insight-panel {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: var(--insight-panel-bg);
+  border: 1px solid var(--insight-border-color);
+  box-shadow: var(--insight-box-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-duration);
+}
+
+.insight-panel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--insight-highlight-color), var(--insight-secondary-color));
+  box-shadow: 0 0 10px rgba(138, 230, 92, 0.8);
+  transition: background var(--transition-duration), box-shadow var(--transition-duration);
+}
+
+.insight-panel .ant-alert-message {
+  color: var(--insight-highlight-color);
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color var(--transition-duration);
+}
+
+.insight-panel .ant-alert-description {
+  color: var(--text-color);
+  line-height: 1.8;
+  font-size: 15px;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: color var(--transition-duration);
+}
+
+/* 统计卡片样式 */
+.stat-card {
+  height: 100%;
+  text-align: center;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all var(--transition-duration);
+  background-color: var(--insight-card-bg);
+  border: 1px solid var(--insight-border-color);
+  box-shadow: var(--box-shadow-base);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(138, 230, 92, 0.1);
+  border-color: rgba(138, 230, 92, 0.4);
+}
+
+.color-stats {
+  color: white;
+}
+
+.color-stats .ant-statistic-title {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.color-stats .ant-statistic-content {
+  color: white;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.blue-stats {
+  background-color: #1E1E1E;
+  border: 1px solid rgba(138, 230, 92, 0.2);
+}
+
+.green-stats {
+  background-color: #1E1E1E;
+  border: 1px solid rgba(138, 230, 92, 0.2);
+}
+
+.purple-stats {
+  background-color: #1E1E1E;
+  border: 1px solid rgba(138, 230, 92, 0.2);
+}
+
+.orange-stats {
+  background-color: #1E1E1E;
+  border: 1px solid rgba(255, 159, 69, 0.2);
+}
+
+.good-rate .ant-statistic-title,
+.bad-rate .ant-statistic-title {
+  font-weight: bold;
+}
+
+/* 用户属性分析区域 */
+.user-attribute-section {
+  margin-bottom: 24px;
+}
+
+.attribute-card {
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(138, 230, 92, 0.1);
+  background-color: #1E1E1E;
+  border: 1px solid rgba(138, 230, 92, 0.2);
+  color: #FFFFFF;
+}
+
+.attribute-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #8AE65C;
+  border-bottom: 1px solid rgba(138, 230, 92, 0.3);
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bar-chart-container {
+  height: 300px;
+  overflow-y: auto;
+  padding-right: 5px;
+  scrollbar-width: thin;
+  scrollbar-color: #8AE65C #1E1E1E;
+}
+
+.bar-chart-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bar-chart-container::-webkit-scrollbar-thumb {
+  background-color: #8AE65C;
+  border-radius: 3px;
+}
+
+.bar-chart-container::-webkit-scrollbar-track {
+  background-color: #1E1E1E;
+}
+
+.data-item {
+  margin-bottom: 16px;
+}
+
+.data-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: #FFFFFF;
+}
+
+.label-tag {
+  font-weight: bold;
+  color: #CCCCCC;
+}
+
+.item-percent {
+  font-weight: bold;
+  color: #8AE65C;
+  text-shadow: 0 0 5px rgba(138, 230, 92, 0.3);
+}
+
+/* 标签云样式 */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 16px;
+}
+
+/* 饼图网格样式 */
+.pie-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 16px;
+  padding: 16px;
+}
+
+.frequency-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.frequency-label {
+  font-weight: bold;
+  text-align: center;
+}
+
+.circle-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 摘要图表区域 */
+.summary-chart-section {
+  margin-bottom: 24px;
+}
+
+.summary-chart-section h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.summary-bar-item {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed #f0f0f0;
+}
+
+.item-name {
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+.item-summary {
+  color: #666;
+  line-height: 1.8;
+  padding: 8px 16px;
+  background-color: #fafafa;
+  border-radius: 4px;
+  border-left: 3px solid #1890ff;
+}
+
+/* 四象限分析区域 */
+.quadrant-analysis-section {
+  margin-bottom: 24px;
+}
+
+.quadrant-card {
+  height: 100%;
+  margin-bottom: 16px;
+}
+
+.advantage-card .ant-card-head {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border-bottom: 2px solid #52c41a;
+}
+
+.improvement-card .ant-card-head {
+  background-color: #fff1f0;
+  color: #f5222d;
+  border-bottom: 2px solid #f5222d;
+}
+
+.potential-card .ant-card-head {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  border-bottom: 2px solid #1890ff;
+}
+
+.minor-card .ant-card-head {
+  background-color: #fafafa;
+  color: #595959;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+.quadrant-description {
+  margin-bottom: 16px;
+  padding: 8px;
+  background-color: rgba(30, 30, 30, 0.7);
+  border-radius: 4px;
+  border: 1px solid rgba(138, 230, 92, 0.2);
+  color: #FFFFFF;
+  color: #666;
+}
+
+.topic-list {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.topic-item {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+.advantage-item {
+  border-left: 3px solid #52c41a;
+}
+
+.improvement-item {
+  border-left: 3px solid #f5222d;
+}
+
+.potential-item {
+  border-left: 3px solid #1890ff;
+}
+
+.minor-item {
+  border-left: 3px solid #d9d9d9;
+}
+
+.topic-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.topic-name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.topic-metrics {
+  display: flex;
+  gap: 8px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .insight-dashboard {
+    padding: 12px;
+  }
+  
+  .report-header {
+    padding: 16px;
+  }
+  
+  .topic-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .topic-metrics {
+    width: 100%;
+  }
+}

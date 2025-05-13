@@ -1,0 +1,560 @@
+/* ====================
+   基础应用样式 
+==================== */
+
+/* 全局样式变量 */
+:root {
+  /* 基础颜色 */
+  --primary-color: #1890ff;
+  --success-color: #52c41a;
+  --warning-color: #faad14;
+  --error-color: #f5222d;
+  --border-radius-base: 4px;
+  --transition-duration: 0.3s;
+  
+  /* 深色主题 (默认) */
+  --bg-color: #141414;
+  --component-bg: #1f1f1f;
+  --header-bg: #141414;
+  --text-color: rgba(255, 255, 255, 0.85);
+  --text-color-secondary: rgba(255, 255, 255, 0.65);
+  --border-color: #303030;
+  --box-shadow-base: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --sider-bg: #141414;
+  --sider-text: rgba(255, 255, 255, 0.65);
+  --card-bg: #1f1f1f;
+  --positive-color: #52c41a;
+  --negative-color: #f5222d;
+  --chart-grid-color: #303030;
+  
+  /* 深色模式特有变量 */
+  --insight-bg: #121212;
+  --insight-card-bg: #1E1E1E;
+  --insight-border-color: rgba(138, 230, 92, 0.2);
+  --insight-highlight-color: #8AE65C;
+  --insight-secondary-color: #FF9F45;
+  --insight-panel-bg: rgba(138, 230, 92, 0.12);
+  --insight-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(138, 230, 92, 0.15);
+  --insight-gradient: linear-gradient(90deg, #8AE65C, #FF9F45, #FFFFFF, #FF3D3D);
+  --insight-text-shadow: 0 0 10px rgba(138, 230, 92, 0.3);
+  
+  /* 数据可视化颜色 */
+  --chart-color-1: #8AE65C;
+  --chart-color-2: #FF9F45;
+  --chart-color-3: #36CFC9;
+  --chart-color-4: #FF3D3D;
+  --chart-color-5: #9254DE;
+  --chart-color-6: #FAAD14;
+}
+
+/* 已移除浅色主题变量，系统固定使用深色模式 */
+
+/* 重置和基础样式 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+* {
+  box-sizing: inherit;
+}
+
+/* 基础动画 */
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ====================
+   布局样式 
+==================== */
+
+/* 应用布局容器 */
+.app-layout {
+  min-height: 100vh;
+  transition: all var(--transition-duration);
+  background-color: var(--bg-color);
+}
+
+/* 侧边栏样式 */
+.app-sider {
+  box-shadow: 2px 0 8px 0 rgba(0, 0, 0, 0.15);
+  transition: all 0.2s;
+  z-index: 10;
+  background-color: var(--sider-bg) !important;
+}
+
+/* Logo容器 */
+.logo-container {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background-color: var(--sider-bg);
+  overflow: hidden;
+}
+
+.sidebar-logo {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.logo-icon {
+  font-size: 22px;
+  color: #1890ff;
+  margin-right: 8px;
+}
+
+.logo-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.collapse-button {
+  color: white;
+}
+
+/* 侧边栏菜单 */
+.sidebar-menu {
+  border-right: 0;
+}
+
+.sidebar-menu .ant-menu-item {
+  transition: all 0.3s ease;
+  margin: 4px 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sidebar-menu .ant-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.sidebar-menu .ant-menu-item-selected {
+  background-color: #1890ff !important;
+}
+
+/* 侧边栏底部 */
+.sidebar-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 16px;
+  background-color: var(--sider-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-footer .ant-btn {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.sidebar-footer .ant-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* 移动端抽屉 */
+.mobile-drawer {
+  display: none;
+}
+
+.drawer-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  background-color: var(--component-bg);
+}
+
+/* 头部导航栏 */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 64px;
+  background-color: var(--header-bg);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 9;
+  transition: all var(--transition-duration);
+}
+
+/* 已移除主题切换开关样式 */
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-menu-button {
+  display: none;
+  margin-right: 12px;
+}
+
+.breadcrumb-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-search {
+  width: 200px;
+  margin-right: 12px;
+  transition: width 0.3s;
+}
+
+.header-search:focus-within {
+  width: 280px;
+}
+
+.header-divider {
+  height: 24px;
+  margin: 0 16px;
+}
+
+.header-icon-button {
+  font-size: 18px;
+  padding: 0 8px;
+  color: var(--text-color-secondary);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0 8px;
+  border-radius: var(--border-radius-base);
+  transition: background-color var(--transition-duration);
+}
+
+.user-profile:hover {
+  background-color: rgba(0, 0, 0, 0.025);
+}
+
+.username {
+  margin-left: 8px;
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+/* 内容区域 */
+.app-content {
+  padding: 24px;
+  transition: all var(--transition-duration);
+}
+
+.app-main-content {
+  background-color: var(--component-bg);
+  padding: 0;
+  min-height: calc(100vh - 64px - 70px);
+  transition: all var(--transition-duration);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 页脚 */
+.app-footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-color-secondary);
+  transition: all var(--transition-duration);
+  background-color: transparent;
+}
+
+/* ====================
+   响应式样式 
+==================== */
+@media (max-width: 992px) {
+  .mobile-menu-button {
+    display: block;
+  }
+  
+  .mobile-drawer {
+    display: block;
+  }
+  
+  .site-layout {
+    margin-left: 0 !important;
+  }
+  
+  .app-sider {
+    display: none;
+  }
+  
+  .header-search {
+    display: none;
+  }
+  
+  .app-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .username {
+    display: none;
+  }
+  
+  .app-content {
+    padding: 12px;
+  }
+  
+  .header-right {
+    flex: 1;
+    justify-content: flex-end;
+  }
+}
+
+/* ====================
+   原有自定义样式 
+==================== */
+.site-layout-content {
+  padding: 24px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 64px - 70px);
+}
+
+.dashboard-header {
+  margin-bottom: 24px;
+  padding: 16px 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #1890ff;
+  margin-bottom: 8px;
+}
+
+.dashboard-subtitle {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.stats-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
+  height: 100%;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card .number {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.stats-card .title {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.stats-card.primary {
+  background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
+}
+
+.stats-card.success {
+  background: linear-gradient(135deg, #f6ffed 0%, #d9f7be 100%);
+}
+
+.stats-card.warning {
+  background: linear-gradient(135deg, #fffbe6 0%, #fff1b8 100%);
+}
+
+.stats-card.danger {
+  background: linear-gradient(135deg, #fff2f0 0%, #ffccc7 100%);
+}
+
+.chart-card {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
+}
+
+.chart-card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.chart-card .ant-card-head {
+  border-bottom: 0;
+  background-color: #fafafa;
+  padding: 16px 24px;
+}
+
+.chart-card .ant-card-head-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1890ff;
+}
+
+.chart-card .ant-card-body {
+  padding: 16px 24px 24px;
+}
+
+.profile-summary {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.profile-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dashed #f0f0f0;
+}
+
+.profile-item:last-child {
+  border-bottom: none;
+}
+
+.profile-item-label {
+  width: 120px;
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: 500;
+}
+
+.profile-item-value {
+  flex: 1;
+  font-weight: 500;
+  color: #1890ff;
+}
+
+.topic-summary {
+  margin-top: 16px;
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid #1890ff;
+}
+
+.topic-summary-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #1890ff;
+}
+
+.topic-summary-content {
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 1.8;
+}
+
+.insight-card {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  height: 100%;
+}
+
+.insight-card .ant-card-head {
+  background: linear-gradient(90deg, #f5f5f5 0%, #e6f7ff 100%);
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.insight-card .ant-card-head-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1890ff;
+}
+
+.insight-content {
+  white-space: pre-line;
+  line-height: 1.8;
+  padding: 8px 0;
+}
+
+/* 表格样式 */
+.ant-table-thead > tr > th {
+  background-color: #f0f5ff !important;
+  color: #1890ff;
+  font-weight: 600;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: #e6f7ff !important;
+}
+
+/* 标签样式 */
+.ant-tag {
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-weight: 500;
+}
+
+/* 分割线样式 */
+.ant-divider-inner-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-color, #1890ff);
+}
+
+/* 卡片样式 */
+.ant-card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 按钮样式 */
+.ant-btn-primary {
+  background: linear-gradient(90deg, #1890ff 0%, #69c0ff 100%);
+  border: none;
+  box-shadow: 0 2px 6px rgba(24, 144, 255, 0.2);
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(90deg, #40a9ff 0%, #96d6ff 100%);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+/* 页脚样式 */
+.ant-layout-footer {
+  background: var(--sider-bg);
+  color: var(--text-color-secondary);
+  text-align: center;
+  padding: 16px 50px;
+}

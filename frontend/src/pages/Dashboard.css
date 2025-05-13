@@ -1,0 +1,174 @@
+/* Dashboard整体容器样式 */
+.dashboard-container {
+  padding: 24px;
+  background-color: var(--bg-color, #f0f2f5);
+  min-height: 100vh;
+}
+
+/* 头部区域样式 */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  background: var(--card-bg, white);
+  padding: 24px;
+  border-radius: var(--border-radius-base, 8px);
+  box-shadow: var(--box-shadow-base, 0 2px 8px rgba(0, 0, 0, 0.06));
+}
+
+.header-left {
+  flex: 1;
+}
+
+.header-left h2 {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  color: var(--text-color, #1f1f1f);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-description {
+  color: var(--text-color-secondary, #595959);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* 统计卡片区域样式 */
+.stats-cards {
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  height: 100%;
+  transition: all 0.3s;
+  border-radius: var(--border-radius-base, 8px);
+  box-shadow: var(--box-shadow-base, 0 2px 8px rgba(0, 0, 0, 0.06));
+  border: none;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-hover, 0 5px 15px rgba(0, 0, 0, 0.1));
+}
+
+.stat-card-1 {
+  background: var(--stat-card-gradient-1, linear-gradient(135deg, #1890ff 0%, #36cfc9 100%));
+}
+
+.stat-card-2 {
+  background: var(--stat-card-gradient-2, linear-gradient(135deg, #52c41a 0%, #fadb14 100%));
+}
+
+.stat-card-3 {
+  background: var(--stat-card-gradient-3, linear-gradient(135deg, #722ed1 0%, #eb2f96 100%));
+}
+
+.stat-card-4 {
+  background: var(--stat-card-gradient-4, linear-gradient(135deg, #fa541c 0%, #faad14 100%));
+}
+
+.stat-card .ant-statistic-title {
+  color: var(--stat-card-title-color, rgba(255, 255, 255, 0.85));
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.stat-card .ant-statistic-content {
+  color: var(--stat-card-value-color, white);
+}
+
+/* 筛选区域样式 */
+.filter-card {
+  margin-bottom: 24px;
+  border-radius: var(--border-radius-base, 8px);
+  box-shadow: var(--box-shadow-base, 0 2px 8px rgba(0, 0, 0, 0.06));
+}
+
+.filter-card .ant-card-head {
+  border-bottom: 1px solid var(--divider-color, #f0f0f0);
+  padding: 0 24px;
+}
+
+.active-filters {
+  margin-top: 16px;
+}
+
+.custom-select:hover {
+  border-color: var(--primary-color, #1890ff);
+}
+
+/* 数据表格区域样式 */
+.data-table-card {
+  border-radius: var(--border-radius-base, 8px);
+  box-shadow: var(--box-shadow-base, 0 2px 8px rgba(0, 0, 0, 0.06));
+}
+
+.data-table-card .ant-card-head {
+  border-bottom: 1px solid var(--divider-color, #f0f0f0);
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.custom-table {
+  margin-top: 16px;
+}
+
+.custom-table .ant-table-thead > tr > th {
+  background-color: var(--table-header-bg, #f7f7f7);
+  color: var(--table-header-text, #262626);
+  font-weight: 600;
+  text-align: center;
+}
+
+.custom-table .ant-table-tbody > tr.table-row-light {
+  background-color: var(--table-row-bg, #ffffff);
+}
+
+.custom-table .ant-table-tbody > tr.table-row-dark {
+  background-color: var(--table-row-alt-bg, #fafafa);
+}
+
+.custom-table .ant-table-tbody > tr:hover > td {
+  background-color: var(--table-row-hover-bg, #e6f7ff) !important;
+}
+
+.custom-pagination {
+  margin-top: 16px;
+  text-align: right;
+}
+
+/* 数据ID样式 */
+.data-id {
+  color: var(--text-color-secondary, #8c8c8c);
+  font-family: monospace;
+  font-size: 12px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+  }
+  
+  .header-actions {
+    margin-top: 16px;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .filter-card .ant-form-item {
+    margin-bottom: 16px;
+  }
+}

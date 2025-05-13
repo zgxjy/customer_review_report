@@ -1,0 +1,850 @@
+/* 洞察看板简洁设计样式 */
+
+/* 全局覆盖 Ant Design Progress 组件的样式 */
+.ant-progress-text {
+  color: var(--text-color) !important;
+  transition: color var(--transition-duration);
+}
+
+/* 进度条背景条样式 */
+.ant-progress-inner {
+  background-color: var(--component-bg) !important;
+  transition: background-color var(--transition-duration);
+}
+
+/* 洞察面板组件特有变量 - 使用全局主题变量 */
+:root {
+  /* 使用全局变量映射 */
+  --primary: var(--primary-color);
+  --primary-light: rgba(24, 144, 255, 0.2);
+  --success: var(--success-color);
+  --warning: var(--warning-color);
+  --error: var(--error-color);
+  --border: var(--border-color);
+  --background: var(--bg-color);
+  --card-bg: var(--card-bg);
+  --text-primary: var(--text-color);
+  --text-secondary: var(--text-color-secondary);
+  --text-muted: rgba(255, 255, 255, 0.45);
+  
+  /* 图表颜色 - 使用全局变量 */
+  --chart-green: var(--chart-color-1);
+  --chart-orange: var(--chart-color-2);
+  --chart-white: var(--text-color);
+  --chart-blue: var(--chart-color-3);
+  --chart-red: var(--chart-color-4);
+  --chart-purple: var(--chart-color-5);
+  --chart-grid: var(--chart-grid-color);
+  
+  /* 间距变量 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* 阴影变量 */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-lg: var(--box-shadow-base);
+  
+  /* 圆角变量 */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --module-header-bg: var(--component-bg);
+  --module-positive-bg: rgba(82, 196, 26, 0.15);
+  --module-negative-bg: rgba(245, 34, 45, 0.15);
+  
+  /* 其他变量 */
+  --divider: var(--border-color);
+  --card-background: var(--component-bg);
+}
+
+/* 卡片容器 */
+.card-container {
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--radius-lg) !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid var(--border) !important;
+  background-color: var(--card-bg);
+  transition: all var(--transition-duration);
+}
+
+.card-container .ant-card-head {
+  border-bottom: 1px solid var(--border);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--module-header-bg);
+  transition: all var(--transition-duration);
+}
+
+.card-container .ant-card-head-title {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color var(--transition-duration);
+}
+
+.card-container .ant-card-body {
+  padding: var(--spacing-md);
+}
+
+/* 标题样式 */
+.section-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  position: relative;
+  padding-left: var(--spacing-sm);
+  display: inline-block;
+  color: var(--text-primary);
+  margin: var(--spacing-sm) 0;
+  transition: color var(--transition-duration);
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0.85rem;
+  background: var(--primary);
+  border-radius: var(--radius-sm);
+}
+
+/* AI洞察面板 */
+.insight-panel {
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--radius-md) !important;
+  padding: var(--spacing-md) !important;
+  background-color: var(--insight-panel-bg) !important;
+  border: 1px solid var(--insight-border-color) !important;
+  box-shadow: none !important;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-duration);
+}
+
+.insight-panel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--insight-highlight-color);
+  transition: background-color var(--transition-duration);
+}
+
+.insight-panel .ant-alert-message {
+  color: var(--insight-highlight-color);
+  margin-bottom: var(--spacing-xs);
+  font-size: 0.95rem !important;
+  font-weight: 500;
+  transition: color var(--transition-duration);
+}
+
+.insight-panel .ant-alert-description {
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-size: 0.875rem;
+  transition: color var(--transition-duration);
+}
+
+/* 分割线 */
+.section-divider {
+  margin: var(--spacing-md) 0 var(--spacing-sm);
+  position: relative;
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background-color: var(--divider);
+}
+
+/* 进度条项 */
+.summary-bar-item {
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  background-color: var(--card-background);
+  border: none;
+  position: relative;
+}
+
+/* 总体概览区域样式 */
+.overview-section-wrapper {
+  margin-bottom: var(--spacing-lg);
+}
+
+.section-header {
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  background-color: var(--component-bg);
+  transition: background-color var(--transition-duration);
+}
+
+.section-header h3 {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition-duration);
+}
+
+.section-header h3 svg {
+  margin-right: var(--spacing-sm);
+}
+
+.overview-stats-row {
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+/* 透明卡片样式 */
+.stat-card-transparent {
+  display: flex;
+  align-items: stretch; /* 让子元素拉伸以填充高度 */
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.04); /* 透明深色背景 */
+}
+
+.stat-card-transparent:hover {
+  background-color: rgba(31, 31, 31, 0.6);
+  border-color: rgba(48, 48, 48, 0.8);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-icon {
+  font-size: 28px;
+  margin-right: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+}
+
+.stat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-top: var(--spacing-sm);
+}
+
+.stat-title {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.stat-change {
+  font-size: 14px;
+  margin-left: var(--spacing-sm);
+  display: inline-flex;
+  align-items: center;
+}
+
+.stat-change.positive {
+  color: var(--success);
+}
+
+.stat-change.negative {
+  color: var(--error);
+}
+
+.summary-chart-section {
+  background-color: rgba(25, 25, 25, 0.8);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  border: 1px solid rgba(48, 48, 48, 0.6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.summary-chart-section h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
+  font-size: 16px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.summary-bar-item {
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-sm);
+  border-bottom: 1px solid rgba(60, 60, 60, 0.3);
+  transition: all 0.2s ease;
+}
+
+.summary-bar-item:hover {
+  background-color: rgba(40, 40, 40, 0.5);
+}
+
+/* 进度条容器，用于对齐排名标签和进度条 */
+.progress-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+  gap: 8px;
+}
+
+.rank-tag {
+  /* 恢复行内块或类似显示，移除绝对定位 */
+  /* position: static; */ /* 移除绝对定位 */
+  /* transform: none; */ /* 移除 transform */
+  width: 24px;
+  height: 24px;
+  line-height: 22px; /* 微调以垂直居中 */
+  text-align: center;
+  border-radius: 4px; /* 圆角矩形 */
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-right: 8px; /* 与右侧元素（名称）的间距 */
+  flex-shrink: 0; /* 防止标签被压缩 */
+}
+
+.item-name {
+  font-weight: 500;
+  font-size: 14px;
+  color: #e0e0e0; /* 深色主题文字颜色 */
+  white-space: nowrap; /* 防止名称换行 */
+  overflow: hidden;
+  text-overflow: ellipsis; /* 超出显示省略号 */
+}
+
+.item-progress-count {
+  display: flex;
+  align-items: center;
+}
+
+.short-progress-bar {
+  flex-grow: 1; /* 占据可用空间，但受max-width限制 */
+  max-width: 180px; /* 限制进度条的最大宽度 */
+  margin-right: 10px; /* 与次数的间距 */
+}
+
+.short-progress-bar .ant-progress-inner {
+  background-color: #f0f0f0; /* 进度条背景色 */
+}
+
+.item-count {
+  font-size: 13px;
+  color: #888;
+  min-width: 40px; /* 保持最小宽度，防止数字跳动 */
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* 排名标签样式 */
+.ranking-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%; /* 圆形 */
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: white;
+}
+
+/* 为不同的点类型设置不同的背景颜色 */
+.ranking-tag-thrill {
+  background-color: #52c41a; /* 绿色 */
+}
+
+.ranking-tag-pain {
+  background-color: #f5222d; /* 红色 */
+}
+
+.ranking-tag-itch {
+  background-color: #1890ff; /* 蓝色 */
+}
+
+/* 摘要样式 */
+.item-summary,
+.item-summary-thrill,
+.item-summary-pain,
+.item-summary-itch {
+  width: 100%; /* 占满摘要容器宽度 */
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  line-height: 1.4;
+  color: #e0e0e0;
+  background-color: rgba(255, 255, 255, 0.08); /* 稍微亮一点的背景 */
+  overflow: hidden;
+  text-overflow: ellipsis; /* 溢出时显示省略号 */
+}
+
+/* 四象限分析区域 */
+.quadrant-analysis-section {
+  margin-top: var(--spacing-md);
+}
+
+.section-header {
+  margin-bottom: var(--spacing-sm);
+}
+
+.section-header h3 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  padding-left: var(--spacing-sm);
+  border-left: 3px solid var(--primary);
+}
+
+.section-header h3 svg {
+  margin-right: var(--spacing-xs);
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.mermaid-quadrant-container {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: none;
+  background-color: var(--card-background);
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-md) !important;
+  border: none;
+}
+
+/* 四象限卡片 */
+.quadrant-card {
+  height: 100%;
+  border-radius: var(--radius-md) !important;
+  overflow: hidden;
+  border: none !important;
+  box-shadow: none !important;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* 四象限话题项目统一样式 */
+.topic-item {
+  position: relative !important;
+  padding: 10px 12px 10px 15px !important;
+  margin-bottom: 10px !important;
+  background-color: rgba(30, 30, 30, 0.7) !important;
+  border-radius: 4px !important;
+  border-left-width: 2px !important;
+  border-left-style: solid !important;
+}
+
+.advantage-item {
+  border-left-color: #52c41a !important;
+}
+
+.improvement-item {
+  border-left-color: #f22d34 !important;
+}
+
+.potential-item {
+  border-left-color: #1677ff !important;
+}
+
+.minor-item {
+  border-left-color: #8e959e !important;
+}
+
+/* 通用洞察面板组件样式 */
+.common-insight-panel {
+  background-color: rgba(25, 25, 25, 0.8);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  padding: 20px;
+  border-left: 3px solid;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.common-insight-panel.success {
+  border-left-color: var(--success);
+  background-color: rgba(82, 196, 26, 0.12);
+}
+
+.common-insight-panel.info {
+  border-left-color: var(--primary);
+  background-color: rgba(24, 144, 255, 0.12);
+}
+
+.common-insight-panel.warning {
+  border-left-color: var(--warning);
+  background-color: rgba(250, 173, 20, 0.12);
+}
+
+.common-insight-panel.error {
+  border-left-color: var(--error);
+  background-color: rgba(245, 82, 45, 0.12);
+}
+
+.common-insight-panel.default {
+  border-left-color: #8c8c8c;
+  background-color: rgba(140, 140, 140, 0.12);
+}
+
+.common-insight-title {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #FFFFFF;
+}
+
+.common-insight-title .icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.common-insight-content {
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.8;
+  white-space: pre-line;
+  font-size: 14px;
+}
+
+.quadrant-card .ant-card-head {
+  border-bottom: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  background-color: var(--card-background);
+}
+
+.advantage-card .ant-card-head {
+  background-color: var(--module-positive-bg);
+}
+
+.improvement-card .ant-card-head {
+  background-color: var(--module-negative-bg);
+}
+
+.advantage-card .ant-card-head-title {
+  color: var(--success);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.improvement-card .ant-card-head-title {
+  color: var(--danger);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.potential-card .ant-card-head-title {
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.minor-card .ant-card-head-title {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.quadrant-description {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  border-left: 2px solid var(--border);
+}
+
+/* 自适应字体缩小 */
+@media screen and (max-width: 1400px) {
+  .stat-value {
+    font-size: clamp(18px, 5vw, 28px);
+  }
+  
+  .stat-title {
+    font-size: clamp(12px, 3vw, 15px);
+  }
+}
+
+/* 特殊处理长文本的卡片 */
+.stat-card-transparent:nth-child(5) .stat-value,
+.stat-card-transparent:nth-child(6) .stat-value {
+  font-size: clamp(16px, 5vw, 28px);
+  line-height: 1.3;
+}
+
+/* 确保文本不会溢出但保持完整 */
+.stat-value, .stat-title {
+  width: 100%;
+  text-align: left;
+  word-break: keep-all;
+  hyphens: auto;
+}
+
+/* 话题项 */
+.topic-item {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  background-color: var(--card-background);
+  border: none;
+  border-bottom: 1px solid var(--divider);
+}
+
+.topic-list {
+  padding: var(--spacing-xs);
+}
+
+.advantage-item {
+  border-left: 2px solid var(--success);
+}
+
+.improvement-item {
+  border-left: 2px solid var(--danger);
+}
+
+.potential-item {
+  border-left: 2px solid var(--primary);
+}
+
+.minor-item {
+  border-left: 2px solid var(--text-muted);
+}
+
+.topic-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+.topic-name {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.topic-metrics {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+.topic-metrics .ant-tag {
+  border-radius: var(--radius-sm);
+  padding: 0 4px;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  margin-right: 0;
+}
+
+/* 空状态 */
+.ant-empty {
+  margin: var(--spacing-md) 0;
+}
+
+.ant-empty-image {
+  height: 40px;
+  opacity: 0.6;
+}
+
+.ant-empty-description {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: var(--spacing-xs);
+}
+
+/* 总体概览卡片样式 */
+.overview-card {
+  background-color: #222222;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: none !important;
+  transition: box-shadow 0.2s ease;
+  height: 120px; /* 增加卡片高度 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.overview-card:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.overview-card .ant-statistic-title {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.overview-card .ant-statistic-content {
+  font-size: 1.8rem;
+  line-height: 1.2;
+  margin-top: 8px;
+}
+
+.overview-section .ant-row {
+  margin-bottom: var(--spacing-sm);
+}
+
+/* 新增样式 */
+.insight-list-item {
+  background-color: rgba(255, 255, 255, 0.04); /* 使用透明深色背景 */
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px; /* 调整卡片间距 */
+  display: flex;
+  align-items: center;
+}
+
+.insight-list-item:last-child {
+  margin-bottom: 0;
+}
+
+.ranking-tag {
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 50%; /* 圆形 */
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  text-align: center;
+  border: none;
+  color: #fff; /* 白色数字 */
+}
+
+.item-name {
+  font-weight: 500; /* 调整字重 */
+  font-size: 15px;
+  color: #e0e0e0; /* 浅灰色文字 */
+  margin-right: 16px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.short-progress-bar {
+  width: 80px;
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.short-progress-bar .ant-progress-inner {
+  background-color: rgba(255, 255, 255, 0.1) !important; /* 浅灰色轨道 */
+}
+
+.short-progress-bar .ant-progress-bg {
+  height: 8px !important;
+  border-radius: 4px !important;
+}
+
+.item-count {
+  font-size: 14px;
+  color: #FFFFFF; /* 白色文字 */
+  min-width: 50px;
+  text-align: left;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.item-summary-thrill,
+.item-summary-pain,
+.item-summary-itch {
+  font-size: 14px;
+  color: #cccccc; /* 摘要文字颜色 */
+  line-height: 1.5;
+  flex-grow: 1;
+  background-color: rgba(255, 255, 255, 0.08); /* 摘要框背景色 */
+  padding: 8px 12px; /* 调整内边距 */
+  border-radius: 6px; /* 圆角 */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* 边框 */
+  border-left: none; /* 保持无左边框 */
+}
+
+.ranking-tag-thrill {
+  background-color: #52c41a; /* Green */
+}
+
+.ranking-tag-pain {
+  background-color: #f5222d; /* Red */
+}
+
+.ranking-tag-itch {
+  background-color: #1890ff; /* Blue */
+}
+
+/* 第一部分：排名标签容器 */
+.rank-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  flex-shrink: 0;
+  margin-right: 15px;
+}
+
+/* 第二部分：名称和进度条容器 */
+.name-progress-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 250px; /* 固定宽度 */
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+
+.item-name-container {
+  margin-bottom: 8px;
+}
+
+/* 进度条和次数容器 */
+.progress-count-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%; /* 占满父容器宽度 */
+}
+
+.short-progress-bar {
+  width: 180px !important; /* 固定宽度的进度条 */
+  flex-shrink: 0;
+  height: 8px !important; /* 保持短小 */
+}
+
+.item-count {
+  position: absolute;
+  right: 0;
+  color: #b0b0b0; /* 稍微暗一点的灰色 */
+  font-size: 0.9em;
+  white-space: nowrap; /* 防止文本换行 */
+}
+
+/* 第三部分：摘要容器 */
+.summary-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}

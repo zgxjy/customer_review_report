@@ -1,0 +1,226 @@
+{
+  "project_code": "kinyo",
+  "solution": "AI自打标：不限定",
+  "model": "gpt-3.5-turbo",
+  "top_topics_count": 1,
+  "process_time": "2025-04-25 13:09:47",
+  "data_id": "96583f00-41f1-4ebd-8bf2-c23f54fae0dc",
+  "token_usage": {
+    "prompt_tokens": 13197,
+    "completion_tokens": 349,
+    "total_tokens": 13546,
+    "calls_count": 5
+  },
+  "total_review": 1399,
+  "user_profile": {
+    "profiles": {
+      "new_gender": [
+        {
+          "value": "男性",
+          "count": 10
+        },
+        {
+          "value": "女性",
+          "count": 21
+        },
+        {
+          "value": "未知性别",
+          "count": 3
+        }
+      ],
+      "new_occupation": [
+        {
+          "value": "教育工作者",
+          "count": 146
+        },
+        {
+          "value": "旅游工作者",
+          "count": 5
+        },
+        {
+          "value": "办公人员",
+          "count": 4
+        },
+        {
+          "value": "体育教练",
+          "count": 5
+        },
+        {
+          "value": "市场摆摊人员",
+          "count": 1
+        }
+      ],
+      "new_consumption_scene": [
+        {
+          "value": "户外活动",
+          "count": 15
+        },
+        {
+          "value": "班级教学",
+          "count": 105
+        },
+        {
+          "value": "办公室",
+          "count": 22
+        },
+        {
+          "value": "游客导览",
+          "count": 12
+        },
+        {
+          "value": "日常使用",
+          "count": 20
+        }
+      ],
+      "new_consumption_frequency": [
+        {
+          "value": "首次购买",
+          "count": 68
+        },
+        {
+          "value": "复购购买",
+          "count": 35
+        },
+        {
+          "value": "高频购买",
+          "count": 44
+        },
+        {
+          "value": "未知购买",
+          "count": 1
+        }
+      ],
+      "new_consumption_thrill_point": [
+        {
+          "value": "音质优质",
+          "count": 64,
+          "summary": "音质清晰，无杂音；声音响亮；适合课堂使用；轻便便携；操作简单；稳定连接蓝牙；受益于音质优秀。"
+        },
+        {
+          "value": "使用舒适",
+          "count": 32
+        },
+        {
+          "value": "外观设计精美",
+          "count": 25
+        },
+        {
+          "value": "无线便携",
+          "count": 10
+        },
+        {
+          "value": "教学专用",
+          "count": 13
+        }
+      ],
+      "new_consumption_pain_point": [
+        {
+          "value": "嗓子不适",
+          "count": 21,
+          "summary": "老师们因长时间喊课而受喉咙损伤，希望找到一款省力的扩音器。频繁使用嗓子容易感觉干疼，这款音质清晰，使用方便的扩音器可以有效缓解喉咙压力。"
+        },
+        {
+          "value": "佩戴不适",
+          "count": 10
+        },
+        {
+          "value": "连接困扰",
+          "count": 3
+        },
+        {
+          "value": "音质问题",
+          "count": 9
+        },
+        {
+          "value": "价格反感",
+          "count": 2
+        },
+        {
+          "value": "耐用度问题",
+          "count": 2
+        },
+        {
+          "value": "使用复杂",
+          "count": 3
+        }
+      ],
+      "new_consumption_itch_point": [
+        {
+          "value": "有线耳机",
+          "count": 51,
+          "summary": "这款有线耳机在解决头戴式带来的不适问题上表现突出，音质清晰且适用于教学场景，颜值高、方便携带，受教师和家长青睐。"
+        },
+        {
+          "value": "无线扩音器",
+          "count": 18
+        },
+        {
+          "value": "领夹式麦克风",
+          "count": 10
+        },
+        {
+          "value": "蓝牙连接设备",
+          "count": 5
+        }
+      ]
+    },
+    "top_profile": {
+      "new_gender": {
+        "value": "女性",
+        "count": 21
+      },
+      "new_occupation": {
+        "value": "教育工作者",
+        "count": 146
+      },
+      "new_consumption_scene": {
+        "value": "班级教学",
+        "count": 105
+      },
+      "new_consumption_frequency": {
+        "value": "首次购买",
+        "count": 68
+      },
+      "new_consumption_thrill_point": {
+        "value": "音质优质",
+        "count": 64,
+        "summary": "音质清晰，无杂音；声音响亮；适合课堂使用；轻便便携；操作简单；稳定连接蓝牙；受益于音质优秀。"
+      },
+      "new_consumption_pain_point": {
+        "value": "嗓子不适",
+        "count": 21,
+        "summary": "老师们因长时间喊课而受喉咙损伤，希望找到一款省力的扩音器。频繁使用嗓子容易感觉干疼，这款音质清晰，使用方便的扩音器可以有效缓解喉咙压力。"
+      },
+      "new_consumption_itch_point": {
+        "value": "有线耳机",
+        "count": 51,
+        "summary": "这款有线耳机在解决头戴式带来的不适问题上表现突出，音质清晰且适用于教学场景，颜值高、方便携带，受教师和家长青睐。"
+      }
+    }
+  },
+  "new_topic": {
+    "total_stats": {
+      "topic_count": 29,
+      "good_count": 3028,
+      "neutral_count": 106,
+      "bad_count": 81,
+      "total_count": 3215,
+      "good_rate": 0.9418351477449456,
+      "neutral_bad_rate": 0.05816485225505443
+    },
+    "topics": {
+      "音质表现": {
+        "好评": 881,
+        "差评": 22,
+        "中评": 29,
+        "总数": 932,
+        "好评占比": 0.9452789699570815,
+        "中差评占比": 0.05472103004291846,
+        "提及率": 0.6661901358112938,
+        "好评摘要": "音质清晰，声音宏亮，没有杂音，适合教学使用和导游说明，方便携带。",
+        "中差评摘要": "音质表现中差评主要原因在于声音回音、延迟和失真问题，消费者反馈声音不清晰、略微有延时以及无线连接质量欠佳，导致用户体验不佳。"
+      }
+    }
+  },
+  "_id": "680b1923a112a3212d1f3ee3"
+}

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互动分析流 (自适应版) | Interactive Analysis Flow (Adaptive)</title>
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com/3.4.3"></script>
+    <!-- Font Awesome via CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- JS for logic -->
+
+    <style>
+        :root { /* ... (same) ... */
+            --tesla-red: #E31937; --dark-bg: #000000; --sidebar-bg: #111;
+            --light-gray: #a0a0a0; --medium-gray: #555; --dark-gray: #222;
+            --glow-color: rgba(227, 25, 55, 0.7); --tentative-color: rgba(227, 25, 55, 0.4);
+            --highlight-bg: #2a2a2a;
+        }
+
+        html, body {
+             height: 100%; /* Ensure html and body take full height */
+             overflow: hidden; /* Prevent scrollbars on body itself */
+        }
+
+        body {
+            background-color: var(--dark-bg); color: #ffffff; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            display: flex; flex-direction: column;
+            min-height: 100vh; /* Use min-height instead of height for flexibility */
+        }
+
+        header {
+            flex-shrink: 0; /* Prevent header from shrinking */
+            z-index: 30; /* Keep header above content */
+             background-color: var(--dark-bg); /* Explicit background */
+             border-bottom: 1px solid var(--dark-gray);
+             padding: 0.5rem 0; /* py-2 */
+             text-align: center;
+        }
+         header h1 {
+              font-size: 1rem; /* text-base */ font-weight: 700; /* bold */
+         }
+         header h1 span {
+              font-size: 0.8rem; font-weight: 400; text-transform: uppercase; color: var(--light-gray);
+         }
+
+
+        .main-content {
+            display: flex;
+            flex-grow: 1; /* Takes up remaining vertical space */
+            overflow: hidden; /* Prevent internal content from causing body scroll */
+            min-height: 0; /* Important for flex-grow items to shrink if needed */
+        }
+
+        /* Left Sidebar - Wider */
+        .sidebar {
+            width: 40%; /* Increased width */
+            max-width: 480px; /* Increased max-width */
+            background-color: var(--sidebar-bg);
+            padding: 1.5rem; /* p-6 */
+            border-right: 1px solid var(--dark-gray);
+            overflow-y: auto; /* Allow sidebar scrolling if needed */
+            flex-shrink: 0; /* Prevent sidebar from shrinking horizontally */
+        }
+        .step-description { /* ... (same) ... */ padding: 1rem; margin-bottom: 1rem; border-radius: 0.5rem; border: 1px solid transparent; transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .step-description.highlight-step { /* ... (same) ... */ background-color: var(--highlight-bg); border-left: 4px solid var(--tesla-red); }
+        .step-title { /* ... (same) ... */ font-size: 1.125rem; font-weight: 700; color: var(--tesla-red); margin-bottom: 0.5rem; }
+        .step-subtitle { /* ... (same) ... */ font-size: 0.8rem; color: var(--light-gray); text-transform: uppercase; margin-bottom: 0.75rem; }
+        .step-text { /* ... (same) ... */ font-size: 0.875rem; color: #ccc; line-height: 1.6; }
+        .step-text strong { color: #fff; font-weight: 600; } .step-text code { background-color: #333; padding: 0.1em 0.4em; border-radius: 3px; font-size: 0.8em; }
+
+
+        /* Right Animation Area - Now takes remaining width and handles vertical flex */
+        .animation-area {
+            flex-grow: 1; /* Takes remaining horizontal space */
+            position: relative;
+            display: flex;
+            flex-direction: column; /* Stack stages container and footer vertically */
+            overflow: hidden; /* Prevent internal elements from overflowing */
+            padding: 1rem 1.5rem; /* Adjusted padding */
+            min-width: 0; /* Allow shrinking */
+        }
+
+        .stages-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 900px;
+             margin: 0 auto 1rem auto; /* Center horizontally, add bottom margin */
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0; /* Prevent stages container from shrinking vertically */
+        }
+        .stage { /* ... (same styles) ... */
+             border: 2px solid var(--medium-gray); background-color: rgba(34, 34, 34, 0.8); border-radius: 0.5rem; padding: 0.8rem; text-align: center; transition: all 0.5s ease-in-out; position: relative; z-index: 10; min-height: 110px; width: 30%; display: flex; flex-direction: column; align-items: center;
+         }
+         .stage.active { /* ... (same) ... */ border-color: var(--tesla-red); box-shadow: 0 0 15px var(--glow-color); }
+         .stage.processing { /* ... (same) ... */ animation: pulse-border 1s infinite alternate; }
+         @keyframes pulse-border { /* ... (same) ... */ from { box-shadow: 0 0 10px var(--glow-color); } to { box-shadow: 0 0 25px var(--glow-color); } }
+         .stage-icon { /* ... (same) ... */ font-size: 1.5rem; color: var(--light-gray); margin-bottom: 0.3rem; transition: color 0.5s ease-in-out; }
+         .stage.active .stage-icon { color: var(--tesla-red); }
+         .stage-label { /* ... (same) ... */ font-size: 0.7rem; text-transform: uppercase; color: var(--light-gray); }
+         .stage-title-cn { /* ... (same) ... */ font-weight: 600; font-size: 0.9rem; margin-bottom: 2px;}
+         .stage-desc { /* ... (same) ... */ font-size: 0.65rem; color: #ccc; margin-top: 1px; }
+         .stage-keyword { /* ... (same) ... */ font-size: 0.8rem; font-weight: bold; color: var(--tesla-red); margin-top: 0.4rem; opacity: 0.5; transition: opacity 0.5s ease-in-out; }
+         .stage.active .stage-keyword { opacity: 1; }
+
+        /* --- Data & Animation Elements (Positions relative to animation-area) --- */
+        #data-pools { /* ... (same) ... */ position: absolute; inset: 0; z-index: 5; }
+         #llm-animation-container, #vector-animation-container { /* ... (same) ... */ position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 11; }
+        .review-particle, .feature-particle, .category-element { /* ... (same styles) ... */ position: absolute; border-radius: 9999px; background-color: var(--tesla-red); transition: transform 0.5s ease-out, opacity 0.5s ease-out, box-shadow 0.2s ease-in-out; z-index: 15; box-shadow: 0 0 5px var(--glow-color); }
+        .review-particle { width: 6px; height: 6px; }
+        .feature-particle { width: 5px; height: 5px; opacity: 0.9; }
+        .category-element { /* ... (same styles with auto width) ... */ width: auto; min-width: 25px; height: 25px; padding: 0 8px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; color: white; border: 1px solid rgba(255,255,255,0.5); z-index: 20; }
+        .feature-particle.highlight, .category-element.highlight { /* ... (same) ... */ transform: scale(1.5); box-shadow: 0 0 15px 5px white; z-index: 25; }
+        .feature-particle.match-pulse { /* ... (same) ... */ animation: matchPulse 0.5s ease-out; }
+        @keyframes matchPulse { /* ... (same) ... */ 0%, 100% { box-shadow: 0 0 5px var(--glow-color); transform: scale(1); } 50% { box-shadow: 0 0 15px 5px #fff; transform: scale(1.4); } }
+
+         #connection-lines-container { /* ... (same styles) ... */ position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 12; }
+         #connection-lines-container line { /* ... (same styles) ... */ stroke-width: 1.5; opacity: 0.7; transition: opacity 0.2s ease-in-out, stroke-width 0.2s ease-in-out, stroke 0.2s ease-in-out; }
+         #connection-lines-container line.solid-line { stroke: var(--tesla-red); }
+         #connection-lines-container line.tentative-line { stroke: var(--tentative-color); stroke-dasharray: 4, 4; }
+         #connection-lines-container line.highlight { stroke: white; stroke-width: 2.5; opacity: 1; }
+
+          .llm-brain-icon { /* ... (same) ... */ position: absolute; font-size: 3rem; color: var(--tesla-red); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; text-shadow: 0 0 10px var(--glow-color); }
+          .swirling-particle { /* ... (same) ... */ position: absolute; width: 3px; height: 3px; background-color: var(--light-gray); border-radius: 50%; opacity: 0.7; }
+          .vector-scan-line { /* ... (same) ... */ position: absolute; height: 1px; background: linear-gradient(90deg, transparent, var(--tentative-color), transparent); transform-origin: left center; opacity: 0; transition: opacity 0.2s ease-out; }
+
+
+        /* --- Footer Controls (Now at bottom of animation area) --- */
+        .controls-footer { /* Renamed parent div for clarity */
+             margin-top: auto; /* Pushes footer to bottom of flex column */
+             padding-top: 1rem; /* Add space above controls */
+             border-top: 1px solid var(--dark-gray);
+             background-color: var(--dark-bg); /* Match main bg */
+             width: 100%; /* Take full width of animation area */
+             flex-shrink: 0; /* Prevent footer from shrinking */
+             z-index: 30;
+             text-align: center;
+             padding-bottom: 0.8rem; /* Add padding below */
+        }
+         .controls-container { /* ... (same) ... */ display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+         .control-button { /* ... (same) ... */ background-color: var(--dark-gray); color: var(--light-gray); border: 1px solid var(--medium-gray); padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.8rem; transition: all 0.2s ease; cursor: pointer; }
+         .control-button:hover:not(:disabled) { /* ... (same) ... */ background-color: var(--medium-gray); color: white; border-color: var(--light-gray); }
+         .control-button:disabled { /* ... (same) ... */ opacity: 0.4; cursor: not-allowed; }
+         .control-button.active-toggle { /* ... (same) ... */ background-color: var(--tesla-red); border-color: var(--tesla-red); color: white; }
+         .stats-bar { /* ... (same) ... */ display: flex; justify-content: center; gap: 1rem; font-size: 0.75rem; color: var(--light-gray); }
+
+
+        /* Tooltip */
+        .tooltip { /* ... (same) ... */ position: absolute; background-color: rgba(0, 0, 0, 0.85); color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.8rem; white-space: nowrap; z-index: 50; pointer-events: none; display: none; border: 1px solid #444; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>客户评论分析流 | <span class="text-sm font-normal uppercase text-gray-400">Interactive Review Analysis Flow (Adaptive)</span></h1>
+    </header>
+
+    <div class="main-content">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+             <!-- Step Descriptions (Same content as before) -->
+             <div id="step-desc-1" class="step-description"> <div class="step-title">1. 持续特征抽取</div> <div class="step-subtitle">Continuous Feature Extraction</div> <div class="step-text"> 使用 <strong class="text-tesla-red">AI启发式</strong> 自动为每条新评论打标，识别话题和用户画像。此过程 <strong>持续进行</strong>，目标是 <strong>最大化</strong> 捕捉原始信息 (发散性)。<br/> <code>Example: "小学老师..." -> ["小学老师", "互动", "保护嗓子"]</code> </div> </div>
+             <div id="step-desc-2" class="step-description"> <div class="step-title">2. 一次性归纳分类</div> <div class="step-subtitle">One-time Inductive Classification</div> <div class="step-text"> <strong>(手动触发)</strong> 基于第一步的大量特征，利用 <strong>LLM</strong> 或启发式规则进行 <strong>总结、去重、分组</strong>，生成更少、更集中的归纳分类 (收敛性)。<br/> <code>Example: ["小学老师", "幼儿园老师"] -> "教育工作者"</code> </div> </div>
+             <div id="step-desc-3" class="step-description"> <div class="step-title">3. 一次性特征再分类</div> <div class="step-subtitle">One-time Feature Re-classification</div> <div class="step-text"> <strong>(手动触发)</strong> 将原始特征文本 <strong class="text-tesla-red">向量化</strong>。利用文本+向量检索，将原始特征重新匹配到最相似的归纳分类中，发现深层语义关联 (关联性)。<br/> <code>Example: "protect throat" vector ~ "教育工作者" vector -> Associate</code> </div> </div>
+             <div id="step-desc-other" class="step-description"> <div class="step-title">持续匹配 & 重置</div> <div class="step-subtitle">Continuous Matching & Reset</div> <div class="step-text"> 完成步骤2后，新产生的特征会 <strong>尝试匹配</strong> 现有分类 (显示为虚线)。使用 <strong>重置</strong> 按钮清空所有状态，重新开始。 </div> </div>
+        </aside>
+
+        <!-- Right Animation Area -->
+        <main class="animation-area">
+            <!-- Data Pools -->
+            <div id="data-pools">
+                 <div id="raw-features-pool"></div> <div id="categories-area"></div> <svg id="connection-lines-container" width="100%" height="100%"></svg> <div id="tooltip"></div> <div id="llm-animation-container"></div> <div id="vector-animation-container"></div>
+            </div>
+
+            <!-- Pipeline Stages Container -->
+            <div class="stages-container">
+                 <!-- Stages (Same content as before) -->
+                  <div id="stage-1" class="stage"><i class="fas fa-brain stage-icon"></i><div class="stage-title-cn">持续特征抽取</div><div class="stage-label">Step 1</div><div class="stage-desc">Heuristic AI Tagging</div><div class="stage-keyword" id="divergence-keyword">发散 DIVERGENCE</div></div>
+                  <div id="stage-2" class="stage"><i class="fas fa-compress-alt stage-icon"></i><div class="stage-title-cn">归纳特征分类</div><div class="stage-label">Step 2</div><div class="stage-desc">LLM / Heuristic Summary</div><div class="stage-keyword" id="convergence-keyword">收敛 CONVERGENCE</div></div>
+                  <div id="stage-3" class="stage"><i class="fas fa-magnet stage-icon"></i><div class="stage-title-cn">特征再分类</div><div class="stage-label">Step 3</div><div class="stage-desc">Vector Search Match</div><div class="stage-keyword" id="association-keyword">关联 ASSOCIATION</div></div>
+            </div>
+
+             <!-- Footer Controls moved inside animation area -->
+            <div class="controls-footer">
+                 <div class="controls-container">
+                     <button id="run-pause-button" class="control-button"> <i class="fas fa-play mr-1"></i> 运行步骤1 </button>
+                     <button id="step2-button" class="control-button" disabled> <i class="fas fa-cogs mr-1"></i> 处理步骤2 </button>
+                     <button id="step3-button" class="control-button" disabled> <i class="fas fa-link mr-1"></i> 处理步骤3 </button>
+                     <button id="reset-button" class="control-button"> <i class="fas fa-undo mr-1"></i> 重置 </button>
+                 </div>
+                 <div class="stats-bar">
+                     <span>评论: <span id="review-count">0</span></span>
+                     <span>特征: <span id="feature-count">0</span></span>
+                     <span>分类: <span id="category-count">0</span></span>
+                 </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- DOM Elements (Mostly same, adjust footer ref if needed) ---
+        const sidebarSteps = { 1: document.getElementById('step-desc-1'), 2: document.getElementById('step-desc-2'), 3: document.getElementById('step-desc-3'), other: document.getElementById('step-desc-other') };
+        const animationArea = document.querySelector('.animation-area');
+        const stage1Element = document.getElementById('stage-1');
+        const stage2Element = document.getElementById('stage-2');
+        const stage3Element = document.getElementById('stage-3');
+        const rawFeaturesPool = document.getElementById('raw-features-pool');
+        const categoriesArea = document.getElementById('categories-area');
+        const linesContainer = document.getElementById('connection-lines-container');
+        const llmAnimContainer = document.getElementById('llm-animation-container');
+        const vectorAnimContainer = document.getElementById('vector-animation-container');
+        const runPauseButton = document.getElementById('run-pause-button');
+        const step2Button = document.getElementById('step2-button');
+        const step3Button = document.getElementById('step3-button');
+        const resetButton = document.getElementById('reset-button');
+        const tooltip = document.getElementById('tooltip');
+        const reviewCountEl = document.getElementById('review-count');
+        const featureCountEl = document.getElementById('feature-count');
+        const categoryCountEl = document.getElementById('category-count');
+        const convergenceKeyword = document.getElementById('convergence-keyword');
+        const associationKeyword = document.getElementById('association-keyword');
+
+        // --- State Variables & Config (Same) ---
+        let rawFeatures = []; let categories = []; let connections = [];
+        let reviewCounter = 0; let featureCounter = 0; let isProcessing = false;
+        let step1Interval = null; let animAreaRect = null; let currentStep = 0;
+        const MAX_FEATURES = 100; const REVIEW_INTERVAL = 450;
+        const FEATURE_EXAMPLES = [ /* ... */ "小学老师", "幼儿园老师", "培训班老师", "老师", "孩子互动", "保护嗓子", "音质清晰", "声音大", "音量够用", "没有杂音", "降噪效果好", "质量不错", "做工精细", "手感好", "耐用", "性价比高", "外观好看", "颜色喜欢", "设计简约", "携带方便"];
+        const TARGET_CATEGORIES = [ /* ... */ { id: 'cat-edu', text: '教育工作者', keywords: ['老师', '教师', '教育', '孩子', '互动', '嗓子'] }, { id: 'cat-sound', text: '音质音效', keywords: ['音质', '声音', '音量', '杂音', '降噪'] }, { id: 'cat-quality', text: '产品质量', keywords: ['质量', '做工', '手感', '耐用', '性价比'] }, { id: 'cat-design', text: '外观设计', keywords: ['外观', '颜色', '设计', '携带'] }];
+
+
+        // --- Sidebar Highlighting (Same) ---
+        function clearStepHighlights() { Object.values(sidebarSteps).forEach(el => el.classList.remove('highlight-step')); }
+        function highlightStep(stepKey) { clearStepHighlights(); let keyToHighlight = stepKey; if (stepKey === 1 || stepKey === 2) keyToHighlight = 1; else if (stepKey === 3) keyToHighlight = 2; else if (stepKey === 4) keyToHighlight = 3; else keyToHighlight = 'other'; if (sidebarSteps[keyToHighlight]) { sidebarSteps[keyToHighlight].classList.add('highlight-step'); } }
+
+        // --- Tooltip & Highlight Logic (Same) ---
+        function showTooltip(event, text) { /* ... */ tooltip.style.display = 'block'; tooltip.textContent = text; const buffer = 15; let x = event.clientX + buffer; let y = event.clientY + buffer; const tooltipRect = tooltip.getBoundingClientRect(); const bodyRect = document.body.getBoundingClientRect(); if (x + tooltipRect.width > bodyRect.width) { x = event.clientX - tooltipRect.width - buffer; } if (y + tooltipRect.height > bodyRect.height) { y = event.clientY - tooltipRect.height - buffer; } tooltip.style.left = `${x}px`; tooltip.style.top = `${y}px`; }
+        function hideTooltip() { /* ... */ tooltip.style.display = 'none'; }
+        function clearHighlights() { /* ... */ rawFeatures.forEach(f => f.element.classList.remove('highlight')); categories.forEach(c => c.element.classList.remove('highlight')); connections.forEach(conn => conn.lineElement?.classList.remove('highlight')); document.querySelectorAll('.match-pulse').forEach(el => el.classList.remove('match-pulse')); hideTooltip(); }
+        function highlightCategoryRelations(categoryId) { /* ... */ clearHighlights(); const category = categories.find(c => c.id === categoryId); if (!category) return; category.element.classList.add('highlight'); connections.filter(conn => conn.categoryId === categoryId).forEach(conn => { const feature = rawFeatures.find(f => f.id === conn.featureId); if (feature) feature.element.classList.add('highlight'); if (conn.lineElement) conn.lineElement.classList.add('highlight'); }); }
+        function highlightFeatureRelations(featureId) { /* ... */ clearHighlights(); const feature = rawFeatures.find(f => f.id === featureId); if (!feature) return; feature.element.classList.add('highlight'); connections.filter(conn => conn.featureId === featureId).forEach(conn => { const category = categories.find(c => c.id === conn.categoryId); if (category) category.element.classList.add('highlight'); if (conn.lineElement) conn.lineElement.classList.add('highlight'); }); }
+
+
+        // --- Animation Utilities (Same) ---
+        function updateAnimAreaRect() { animAreaRect = animationArea.getBoundingClientRect(); }
+        function getRandomPositionNear(element, spreadX = 150, spreadY = 100) { /* ... */ if (!animAreaRect) updateAnimAreaRect(); const stageRect = element.getBoundingClientRect(); const centerX = stageRect.left - animAreaRect.left + stageRect.width / 2; const centerY = stageRect.top - animAreaRect.top + stageRect.height / 2; let x = centerX + (Math.random() - 0.5) * spreadX * 2; let y = centerY + (Math.random() - 0.5) * spreadY * 2 + 30; /* Adjusted Y offset slightly */ x = Math.max(10, Math.min(animAreaRect.width - 10, x)); y = Math.max(stageRect.bottom - animAreaRect.top + 20, Math.min(animAreaRect.height - 80, y)); /* Keep above footer */ return { x, y }; }
+        function animateElement(element, targetX, targetY, duration = 500, callback) { /* ... */ element.style.transition = `transform ${duration}ms ease-out, opacity ${duration}ms ease-out`; requestAnimationFrame(() => { element.style.transform = `translate(${targetX}px, ${targetY}px) scale(1)`; }); if (callback) { setTimeout(callback, duration); } }
+        function animateLineDraw(lineElement, duration = 300, isTentative = false) { /* ... */ const length = lineElement.getTotalLength(); lineElement.style.strokeDasharray = length; if (!isTentative) { lineElement.style.strokeDashoffset = length; } lineElement.style.transition = 'stroke-dashoffset 0s'; requestAnimationFrame(() => { lineElement.style.transition = `stroke-dashoffset ${isTentative ? 0 : duration}ms ease-out`; requestAnimationFrame(() => { lineElement.style.strokeDashoffset = '0'; }); }); }
+
+
+        // --- Tentative Association Logic (Same) ---
+        function findBestCategory(featureText) { /* ... */ let bestCategory = null; let topScore = -1; let tiedCategories = []; categories.forEach(cat => { let currentScore = 0; cat.keywords.forEach(kw => { if (featureText.includes(kw)) { currentScore++; } }); currentScore += Math.random() * 0.1; if (currentScore > topScore) { topScore = currentScore; tiedCategories = [cat]; } else if (currentScore === topScore) { tiedCategories.push(cat); } }); if (topScore > 0 || (categories.length > 0 && Math.random() < 0.15)) { if (tiedCategories.length > 0) { bestCategory = tiedCategories[Math.floor(Math.random() * tiedCategories.length)]; } else if (categories.length > 0) { bestCategory = categories[Math.floor(Math.random() * categories.length)]; } } return bestCategory; }
+        function findAndDrawTentativeAssociation(feature) { /* ... */ if (categories.length === 0 || !feature) return; const bestCategory = findBestCategory(feature.text); if (bestCategory) { if (feature.tentativeLine) { feature.tentativeLine.remove(); connections = connections.filter(c => c.lineElement !== feature.tentativeLine); } const line = document.createElementNS('http://www.w3.org/2000/svg', 'line'); line.setAttribute('x1', feature.x); line.setAttribute('y1', feature.y); line.setAttribute('x2', bestCategory.x); line.setAttribute('y2', bestCategory.y); line.classList.add('tentative-line'); linesContainer.appendChild(line); const connectionData = { featureId: feature.id, categoryId: bestCategory.id, lineElement: line, isTentative: true }; connections.push(connectionData); feature.tentativeLine = line; } else if (feature.tentativeLine) { feature.tentativeLine.remove(); connections = connections.filter(c => c.lineElement !== feature.tentativeLine); feature.tentativeLine = null; } }
+
+        // --- Mini Animation Functions (Same) ---
+        function playLLMAbstractionAnimation(callback) { /* ... */ highlightStep(2); console.log("Playing LLM Abstraction Animation..."); if (!animAreaRect) updateAnimAreaRect(); const stage2Rect = stage2Element.getBoundingClientRect(); const llmCenterX = stage2Rect.left - animAreaRect.left + stage2Rect.width / 2; const llmCenterY = stage2Rect.top - animAreaRect.top + stage2Rect.height / 2 - 10; const brainIcon = document.createElement('i'); brainIcon.className = 'fas fa-brain llm-brain-icon'; brainIcon.style.left = `${llmCenterX - 24}px`; brainIcon.style.top = `${llmCenterY - 24}px`; llmAnimContainer.appendChild(brainIcon); requestAnimationFrame(() => { brainIcon.style.opacity = '1'; brainIcon.style.transform = 'scale(1)'; }); const numSwirlParticles = Math.min(rawFeatures.length, 15); const swirlParticles = []; for (let i = 0; i < numSwirlParticles; i++) { const swirlP = document.createElement('div'); swirlP.className = 'swirling-particle'; const angle = Math.random() * Math.PI * 2; const startRadius = stage2Rect.width * 0.6; const startX = llmCenterX + Math.cos(angle) * startRadius; const startY = llmCenterY + Math.sin(angle) * startRadius; swirlP.style.left = `${startX}px`; swirlP.style.top = `${startY}px`; llmAnimContainer.appendChild(swirlP); swirlParticles.push(swirlP); const delay = Math.random() * 300; swirlP.style.transition = `transform 1200ms ${delay}ms cubic-bezier(0.4, 0, 0.2, 1), opacity 1200ms ${delay}ms ease-out`; requestAnimationFrame(() => { const endAngle = angle + Math.PI * 2 * (Math.random() > 0.5 ? 1 : -1); const endX = llmCenterX - (startX) + (Math.random()-0.5)*10; const endY = llmCenterY - (startY) + (Math.random()-0.5)*10; swirlP.style.transform = `translate(${endX}px, ${endY}px) rotate(${Math.random()*360}deg) scale(0.5)`; swirlP.style.opacity = '0'; }); } const animDuration = 1500; setTimeout(() => { brainIcon.style.opacity = '0'; brainIcon.style.transform = 'scale(0.5)'; swirlParticles.forEach(p => p.remove()); setTimeout(() => { brainIcon.remove(); if (callback) callback(); }, 300); }, animDuration); }
+        function playVectorSearchAnimation(callback) { /* ... */ highlightStep(3); console.log("Playing Vector Search Animation..."); if (!animAreaRect) updateAnimAreaRect(); if (categories.length === 0) { if(callback) callback(); return; } let animationsPending = 0; const totalFeaturesToScan = Math.min(rawFeatures.length, 30); const featuresToScan = rawFeatures.slice(-totalFeaturesToScan); featuresToScan.forEach((feature, index) => { animationsPending++; const delay = index * 50; setTimeout(() => { const bestCategory = findBestCategory(feature.text); if (!bestCategory) { animationsPending--; if (animationsPending === 0 && callback) callback(); return; } const scanLine = document.createElement('div'); scanLine.className = 'vector-scan-line'; vectorAnimContainer.appendChild(scanLine); const dx = bestCategory.x - feature.x; const dy = bestCategory.y - feature.y; const angle = Math.atan2(dy, dx) * 180 / Math.PI; const distance = Math.sqrt(dx * dx + dy * dy); scanLine.style.left = `${feature.x}px`; scanLine.style.top = `${feature.y}px`; scanLine.style.width = `0px`; scanLine.style.transform = `rotate(${angle}deg)`; requestAnimationFrame(() => { scanLine.style.transition = 'opacity 0.2s ease-out, width 0.3s ease-out'; scanLine.style.opacity = '0.8'; scanLine.style.width = `${distance}px`; }); setTimeout(() => { bestCategory.element.style.transition = 'background-color 0.1s ease-out'; bestCategory.element.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'; feature.element.classList.add('match-pulse'); setTimeout(() => { bestCategory.element.style.backgroundColor = ''; feature.element.classList.remove('match-pulse'); }, 300); scanLine.style.opacity = '0'; setTimeout(() => { scanLine.remove(); animationsPending--; if (animationsPending === 0 && callback) callback(); }, 200); }, 300); }, delay); }); if (animationsPending === 0 && callback) { setTimeout(callback, 100); } }
+
+
+        // --- Core Logic: Event Handlers & State Updates (Same Logic, just calls updated button state fn) ---
+         function updateButtonStates() { /* ... (same logic as before) ... */
+             runPauseButton.disabled = isProcessing;
+             step2Button.disabled = isProcessing || !(currentStep === 1 || currentStep === 2) || rawFeatures.length === 0;
+             step3Button.disabled = isProcessing || currentStep !== 3;
+             resetButton.disabled = isProcessing;
+
+             if (currentStep === 1) { // Step 1 running
+                 runPauseButton.innerHTML = `<i class="fas fa-pause mr-1"></i> 暂停步骤1`; runPauseButton.classList.add('active-toggle');
+                 stage1Element.classList.add('active', 'processing'); stage2Element.classList.remove('active'); stage3Element.classList.remove('active');
+                 convergenceKeyword.style.opacity = '0.5'; associationKeyword.style.opacity = '0.5'; highlightStep(1);
+             } else { // Step 1 paused or other steps
+                 runPauseButton.innerHTML = `<i class="fas fa-play mr-1"></i> 运行步骤1`; runPauseButton.classList.remove('active-toggle');
+                 stage1Element.classList.add('active'); stage1Element.classList.remove('processing');
+                 if (currentStep >= 3) { stage2Element.classList.add('active'); convergenceKeyword.style.opacity = '1'; } else { stage2Element.classList.remove('active'); convergenceKeyword.style.opacity = '0.5'; }
+                 if (currentStep >= 4) { stage3Element.classList.add('active'); associationKeyword.style.opacity = '1'; } else { stage3Element.classList.remove('active'); associationKeyword.style.opacity = '0.5'; }
+                 if (currentStep === 0) highlightStep('other'); else if (currentStep === 2) highlightStep(1); else if (currentStep === 3) highlightStep(2); else if (currentStep === 4) highlightStep(3);
+             }
+         }
+        function handleRunPauseStep1() { /* ... (same) ... */ if (currentStep === 1) { clearInterval(step1Interval); step1Interval = null; currentStep = 2; console.log("Step 1 Paused"); } else { if (!step1Interval) { step1Interval = setInterval(createReviewParticle, REVIEW_INTERVAL); } currentStep = 1; console.log("Step 1 Running"); } updateButtonStates(); }
+        function createReviewParticle() { /* ... */ if (rawFeatures.length >= MAX_FEATURES) return; reviewCounter++; reviewCountEl.textContent = reviewCounter; const particle = document.createElement('div'); particle.className = 'review-particle'; rawFeaturesPool.appendChild(particle); if (!animAreaRect) updateAnimAreaRect(); const stage1Rect = stage1Element.getBoundingClientRect(); const startX = stage1Rect.left - animAreaRect.left - 30; const startY = stage1Rect.top - animAreaRect.top + stage1Rect.height / 2 + (Math.random() - 0.5) * 50; particle.style.left = `${startX}px`; particle.style.top = `${startY}px`; particle.style.opacity = '0'; const targetX = stage1Rect.left - animAreaRect.left + 10; const targetY = startY; requestAnimationFrame(() => { particle.style.transition = 'transform 1000ms linear, opacity 500ms ease-out'; particle.style.opacity = '1'; particle.style.transform = `translate(${targetX - startX}px, ${targetY - startY}px)`; }); setTimeout(() => createFeatureParticle(particle), 500); setTimeout(() => particle.remove(), 1100); }
+        function createFeatureParticle(originParticle) { /* ... */ if (rawFeatures.length >= MAX_FEATURES) return; featureCounter++; featureCountEl.textContent = featureCounter; const featureId = `f-${featureCounter}`; const featureText = FEATURE_EXAMPLES[Math.floor(Math.random() * FEATURE_EXAMPLES.length)]; const particle = document.createElement('div'); particle.className = 'feature-particle'; particle.id = featureId; particle.dataset.tooltip = featureText; rawFeaturesPool.appendChild(particle); if (!animAreaRect) updateAnimAreaRect(); const stage1Rect = stage1Element.getBoundingClientRect(); const startX = stage1Rect.left - animAreaRect.left + stage1Rect.width / 2; const startY = stage1Rect.top - animAreaRect.top + stage1Rect.height / 2; particle.style.left = `${startX}px`; particle.style.top = `${startY}px`; particle.style.opacity = '0'; const targetPos = getRandomPositionNear(stage1Element, animAreaRect.width * 0.3, animAreaRect.height * 0.4); const featureData = { id: featureId, element: particle, x: targetPos.x, y: targetPos.y, text: featureText, tentativeLine: null }; rawFeatures.push(featureData); requestAnimationFrame(() => { particle.style.transition = 'transform 800ms ease-out, opacity 500ms ease-out'; particle.style.transform = `translate(${targetPos.x - startX}px, ${targetPos.y - startY}px)`; particle.style.opacity = '0.9'; setTimeout(() => { particle.style.left = `${targetPos.x}px`; particle.style.top = `${targetPos.y}px`; particle.style.transform = 'translate(0, 0)'; particle.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out, box-shadow 0.2s ease-in-out'; findAndDrawTentativeAssociation(featureData); }, 800); }); particle.addEventListener('mouseenter', (e) => { if (!isProcessing) { highlightFeatureRelations(featureId); showTooltip(e, particle.dataset.tooltip); } }); particle.addEventListener('mouseleave', () => { if (!isProcessing) { clearHighlights(); } hideTooltip(); }); }
+        function handleProcessStep2() { /* ... (same flow, calls createCategories) ... */ if (isProcessing || !(currentStep === 1 || currentStep === 2)) return; if (currentStep === 1) { handleRunPauseStep1(); } isProcessing = true; updateButtonStates(); console.log("Processing Step 2..."); categoriesArea.innerHTML = ''; categories = []; categoryCountEl.textContent = '0'; connections = connections.filter(conn => { if (!conn.isTentative) { conn.lineElement?.remove(); return false; } return true; }); stage2Element.classList.add('active', 'processing'); convergenceKeyword.style.opacity = '1'; playLLMAbstractionAnimation(() => { createCategories(() => { stage2Element.classList.remove('processing'); currentStep = 3; isProcessing = false; updateButtonStates(); console.log("Step 2 Processing Complete."); }); }); }
+         function createCategories(callback) { /* ... (same, calls findAndDrawTentativeAssociation for all features at the end) ... */ console.log("Creating categories..."); categoryCountEl.textContent = TARGET_CATEGORIES.length; const stage2Rect = stage2Element.getBoundingClientRect(); const stage3Rect = stage3Element.getBoundingClientRect(); if (!animAreaRect) updateAnimAreaRect(); TARGET_CATEGORIES.forEach((catData, i) => { const categoryId = catData.id; const categoryName = catData.text; const categoryEl = document.createElement('div'); categoryEl.className = 'category-element'; categoryEl.id = categoryId; categoryEl.textContent = categoryName; categoryEl.dataset.tooltip = categoryName; categoriesArea.appendChild(categoryEl); const posX = (stage2Rect.left + stage3Rect.right) / 2 - animAreaRect.left + (i - (TARGET_CATEGORIES.length - 1) / 2) * (animAreaRect.width * 0.18); const posY = Math.max(stage2Rect.bottom, stage3Rect.bottom) - animAreaRect.top + 60; categoryEl.style.left = `${posX}px`; categoryEl.style.top = `${posY - 12.5}px`; categoryEl.style.transform = 'scale(0)'; categoryEl.style.opacity = '0'; const elWidth = categoryEl.offsetWidth; categoryEl.style.left = `${posX - elWidth / 2}px`; const newCategory = { id: categoryId, element: categoryEl, x: posX, y: posY, text: categoryName, keywords: catData.keywords, rawFeatureIds: [] }; categories.push(newCategory); requestAnimationFrame(() => { categoryEl.style.transition = 'transform 500ms cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 300ms ease-out'; categoryEl.style.transform = 'scale(1)'; categoryEl.style.opacity = '1'; }); categoryEl.addEventListener('mouseenter', (e) => { if (!isProcessing) { highlightCategoryRelations(categoryId); showTooltip(e, categoryEl.dataset.tooltip); } }); categoryEl.addEventListener('mouseleave', () => { if (!isProcessing) { clearHighlights(); } hideTooltip(); }); }); setTimeout(() => { rawFeatures.forEach(f => findAndDrawTentativeAssociation(f)); if (callback) callback(); }, 500); }
+        function handleProcessStep3() { /* ... (same flow, calls drawFinalLines) ... */ if (isProcessing || currentStep !== 3) return; isProcessing = true; updateButtonStates(); console.log("Processing Step 3..."); stage3Element.classList.add('active', 'processing'); associationKeyword.style.opacity = '1'; playVectorSearchAnimation(() => { drawFinalLines(() => { stage3Element.classList.remove('processing'); currentStep = 4; isProcessing = false; updateButtonStates(); console.log("Step 3 Processing Complete."); }); }); }
+         function drawFinalLines(callback) { /* ... (same) ... */ console.log("Drawing final association lines..."); rawFeatures.forEach(feature => { let existingTentativeConn = connections.find(c => c.featureId === feature.id && c.isTentative); const bestCategory = findBestCategory(feature.text); if (bestCategory) { if (existingTentativeConn && existingTentativeConn.categoryId === bestCategory.id) { existingTentativeConn.lineElement.classList.remove('tentative-line'); existingTentativeConn.lineElement.classList.add('solid-line'); existingTentativeConn.isTentative = false; bestCategory.rawFeatureIds.push(feature.id); animateLineDraw(existingTentativeConn.lineElement, 100); } else { if (existingTentativeConn) { existingTentativeConn.lineElement.remove(); connections = connections.filter(c => c !== existingTentativeConn); } const line = document.createElementNS('http://www.w3.org/2000/svg', 'line'); line.setAttribute('x1', feature.x); line.setAttribute('y1', feature.y); line.setAttribute('x2', bestCategory.x); line.setAttribute('y2', bestCategory.y); line.classList.add('solid-line'); linesContainer.appendChild(line); connections.push({ featureId: feature.id, categoryId: bestCategory.id, lineElement: line, isTentative: false }); bestCategory.rawFeatureIds.push(feature.id); animateLineDraw(line, 300 + Math.random() * 200); } } else if (existingTentativeConn) { existingTentativeConn.lineElement.remove(); connections = connections.filter(c => c !== existingTentativeConn); feature.tentativeLine = null; } }); if(callback) setTimeout(callback, 300); }
+        function handleReset() { /* ... (same) ... */ console.log("Resetting simulation..."); isProcessing = true; clearInterval(step1Interval); step1Interval = null; rawFeatures = []; categories = []; connections = []; reviewCounter = 0; featureCounter = 0; rawFeaturesPool.innerHTML = ''; categoriesArea.innerHTML = ''; linesContainer.innerHTML = ''; llmAnimContainer.innerHTML = ''; vectorAnimContainer.innerHTML = ''; stage1Element.classList.remove('active', 'processing'); stage2Element.classList.remove('active', 'processing'); stage3Element.classList.remove('active', 'processing'); convergenceKeyword.style.opacity = '0.5'; associationKeyword.style.opacity = '0.5'; reviewCountEl.textContent = '0'; featureCountEl.textContent = '0'; categoryCountEl.textContent = '0'; currentStep = 0; isProcessing = false; updateButtonStates(); highlightStep('other'); console.log("Reset complete."); }
+
+        // --- Initialization ---
+        function init() { /* ... (same, calls handleReset first) ... */
+             console.log("Initializing simulation (Manual Control)..."); updateAnimAreaRect(); window.addEventListener('resize', updateAnimAreaRect); runPauseButton.addEventListener('click', handleRunPauseStep1); step2Button.addEventListener('click', handleProcessStep2); step3Button.addEventListener('click', handleProcessStep3); resetButton.addEventListener('click', handleReset); animationArea.addEventListener('click', (e) => { if (!isProcessing && (e.target === e.currentTarget || e.target.classList.contains('stages-container'))) { clearHighlights(); } }); handleReset();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+
+    </script>
+
+</body>
+</html>

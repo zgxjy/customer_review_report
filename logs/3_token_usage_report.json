@@ -1,0 +1,23 @@
+{
+  "total_tokens": 21014,
+  "call_count": 32,
+  "average_tokens_per_call": 656.7,
+  "tokens_by_model": {
+    "gpt-3.5-turbo": 21014
+  },
+  "tokens_by_operation": {
+    "generate_summary": 21014
+  },
+  "duration_seconds": 30.0,
+  "start_time": "2025-04-24T16:30:10.649291",
+  "end_time": "2025-04-24T16:30:40.649291",
+  "report_time": "2025-04-24T16:30:40.649291",
+  "test_version": "1",
+  "prompt_tokens": 18906,
+  "completion_tokens": 2108,
+  "cost_estimate": {
+    "input_cost": 0.028359,
+    "output_cost": 0.004216,
+    "total_cost": 0.032575
+  }
+}

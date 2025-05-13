@@ -1,0 +1,243 @@
+/* 四象限区域背景色 - 使用CSS变量 */
+.quadrant-bg-q1 { /* 优势话题：右上 */
+  background-color: var(--quadrant-q1-bg, rgba(82,196,26,0.10)); /* 绿色 */
+}
+.quadrant-bg-q2 { /* 需改进话题：右下 */
+  background-color: var(--quadrant-q2-bg, rgba(242,45,52,0.10)); /* 红色 */
+}
+.quadrant-bg-q3 { /* 潜力话题：左上 */
+  background-color: var(--quadrant-q3-bg, rgba(24,144,255,0.10)); /* 蓝色 */
+}
+.quadrant-bg-q4 { /* 次要话题：左下 */
+  background-color: var(--quadrant-q4-bg, rgba(220,220,220,0.30)); /* 灰色 */
+}
+
+/* 四象限图表容器样式 */
+.quadrant-chart-container {
+  position: relative;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.quadrant-chart {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--quadrant-bg, rgba(25, 25, 25, 0.8));
+  border: 1px solid var(--quadrant-border, rgba(48, 48, 48, 0.6));
+  border-radius: 4px;
+  margin: 0 auto;
+}
+
+/* 图表标题 */
+.chart-title {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--chart-text, #FFFFFF);
+}
+
+/* 坐标轴 */
+.x-axis {
+  position: absolute;
+  left: 50px;
+  right: 50px;
+  bottom: 50px;
+  height: 1px;
+  background-color: var(--quadrant-axis, rgba(255, 255, 255, 0.3));
+}
+
+.y-axis {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  bottom: 50px;
+  width: 1px;
+  background-color: var(--quadrant-axis, rgba(255, 255, 255, 0.3));
+}
+
+/* 坐标轴标签 */
+.x-label {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: var(--quadrant-label, rgba(255, 255, 255, 0.7));
+}
+
+.y-label {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-size: 12px;
+  color: var(--quadrant-label, rgba(255, 255, 255, 0.7));
+}
+
+/* 平均线 */
+.avg-line {
+  position: absolute;
+  background-color: var(--quadrant-axis, rgba(255, 255, 255, 0.5));
+  z-index: 5;
+}
+
+.x-line {
+  left: 50px;
+  right: 50px;
+  height: 2px;
+  border-top: 1px dashed var(--quadrant-axis, #666);
+}
+
+.y-line {
+  top: 50px;
+  bottom: 50px;
+  width: 2px;
+  border-left: 1px dashed var(--quadrant-axis, #666);
+}
+
+/* 中心点 */
+.center-point {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: var(--quadrant-center-point, #ff4d4f);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+  box-shadow: 0 0 0 3px var(--quadrant-center-point-shadow, rgba(255, 77, 79, 0.2));
+}
+
+.center-label {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--quadrant-center-point, #ff4d4f);
+  font-weight: bold;
+  background-color: var(--quadrant-label-bg, rgba(255, 255, 255, 0.8));
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+/* 象限标签 */
+.quadrant-label {
+  position: absolute;
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  max-width: 140px;
+  overflow: visible;
+}
+
+.q1 {
+  top: 60px;
+  right: 60px;
+  color: var(--quadrant-q1-label, #52c41a);
+}
+
+.q2 {
+  bottom: 60px;
+  right: 60px;
+  color: var(--quadrant-q2-label, #faad14);
+}
+
+.q3 {
+  top: 60px;
+  left: 60px;
+  color: var(--quadrant-q3-label, #1890ff);
+}
+
+.q4 {
+  bottom: 60px;
+  left: 60px;
+  color: var(--quadrant-q4-label, #d9d9d9);
+}
+
+/* 数据点 */
+.data-point {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 数据点悬停效果 */
+.data-point:hover {
+  z-index: 20;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.data-point:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 数据点标签 */
+.point-label {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+/* 工具提示 */
+.tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+  margin-bottom: 5px;
+}
+
+.tooltip:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.75) transparent transparent transparent;
+}
+
+/* 错误消息 */
+.chart-error {
+  padding: 20px;
+  color: #f5222d;
+  text-align: center;
+}
