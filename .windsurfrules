@@ -1,8 +1,0 @@
-# System
-1. 我创建的系统是一个VOC舆情分析系统，最后会有洞察报告输出
-2. 我喜欢后端是python，前端是react
-3. api管理使用fastapi
-4. 数据库使用mongodb
-# Styling & UI
-- Use Tailwind CSS for styling.
-- Use Shadcn UI for components.

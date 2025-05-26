@@ -1,23 +1,23 @@
 {
-  "total_tokens": 1699107,
-  "call_count": 1396,
-  "average_tokens_per_call": 1217.1,
+  "total_tokens": 1705071,
+  "call_count": 1399,
+  "average_tokens_per_call": 1218.8,
   "tokens_by_model": {
-    "gpt-4o-mini": 1699107
+    "gpt-4o-mini": 1705071
   },
   "tokens_by_operation": {
-    "analyze_review": 1699107
+    "analyze_review": 1705071
   },
-  "duration_seconds": 2165.436978,
-  "start_time": "2025-04-26T15:01:06.075274",
-  "end_time": "2025-04-26T15:37:11.512252",
-  "report_time": "2025-04-26T15:37:11.512252",
+  "duration_seconds": 1178.217485,
+  "start_time": "2025-05-19T10:56:23.783261",
+  "end_time": "2025-05-19T11:16:02.000746",
+  "report_time": "2025-05-19T11:16:02.000746",
   "project_code": "1",
-  "prompt_tokens": 1309960,
-  "completion_tokens": 389147,
+  "prompt_tokens": 1315604,
+  "completion_tokens": 389467,
   "cost_estimate": {
-    "input_cost": 1.96494,
-    "output_cost": 0.778294,
-    "total_cost": 2.743234
+    "input_cost": 1.973406,
+    "output_cost": 0.778934,
+    "total_cost": 2.75234
   }
 }

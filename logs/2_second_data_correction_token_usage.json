@@ -1,24 +1,24 @@
 {
-  "total_tokens": 11306,
+  "total_tokens": 11042,
   "call_count": 8,
-  "average_tokens_per_call": 1413.2,
+  "average_tokens_per_call": 1380.2,
   "tokens_by_model": {
-    "gpt-4o-mini": 11306
+    "gpt-4o-mini": 11042
   },
   "tokens_by_operation": {
-    "user_profile_classification": 8219,
-    "product_topic_classification": 3087
+    "user_profile_classification": 8232,
+    "product_topic_classification": 2810
   },
-  "duration_seconds": 62.857891,
-  "start_time": "2025-04-26T15:57:29.101281",
-  "end_time": "2025-04-26T15:58:31.959172",
-  "report_time": "2025-04-26T15:58:31.959172",
+  "duration_seconds": 85.510361,
+  "start_time": "2025-05-19T11:21:15.823084",
+  "end_time": "2025-05-19T11:22:41.333445",
+  "report_time": "2025-05-19T11:22:41.333445",
   "project_code": "kinyo",
-  "prompt_tokens": 10373,
-  "completion_tokens": 933,
+  "prompt_tokens": 10503,
+  "completion_tokens": 539,
   "cost_estimate": {
-    "input_cost": 0.01556,
-    "output_cost": 0.001866,
-    "total_cost": 0.017426
+    "input_cost": 0.015755,
+    "output_cost": 0.001078,
+    "total_cost": 0.016833
   }
 }
